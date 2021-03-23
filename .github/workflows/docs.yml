@@ -2,13 +2,13 @@
 # Licensed under the MIT License.
 # This is a basic workflow to help you get started with Actions
 
-name: Generated Docs PR
+name: GenerateHelpDocs
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
   push:
     branches: 
-      - 'generate-helpdocs.*'
+      - 'DocsGeneration/*'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,14 +27,20 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Checkout
       uses: actions/checkout@v2
-                      
+      
+    - name: List Directory
+      run: | 
+        echo $GITHUB_WORKSPACE
+        ls -lsa $GITHUB_WORKSPACE
+        ls -lsa $GITHUB_WORKSPACE/tools
+                
     # Create a pull request [1]
     - name: Create PR using the GitHub REST API via hub
       shell: bash
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        MESSAGE_TITLE: Generated Help Docs
-        MESSAGE_BODY: "This pull request was automatically created by the GitHub Action,\n\n Contains Generated Docs/Help Files"
+        MESSAGE_TITLE: Weekly OpenApiDocs Download
+        MESSAGE_BODY: "This pull request was automatically created by the GitHub Action,\n\n Contains Help Docs"
         REVIEWERS: peombwa,ddyett,darrelmiller
         ASSIGNEDTO: finsharp
         LABELS: generated
