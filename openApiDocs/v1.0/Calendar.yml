@@ -272,6 +272,75 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+      x-adaptivecard:
+        title: Add to Calendar
+        iconUrl: xyz
+        layout:
+          type: AdaptiveCard
+          "$schema": http://adaptivecards.io/schemas/adaptive-card.json
+          version: '1.3'
+          body:
+          - type: Input.Text
+            id: subject
+            placeholder: Event title
+            label: Event title
+          - type: Input.Text
+            id: location
+            placeholder: Event location
+            label: Event location
+          - type: ColumnSet
+            columns:
+            - type: Column
+              width: stretch
+              items:
+              - type: Input.Date
+                label: Start date
+                id: startDate
+            - type: Column
+              width: stretch
+              items:
+              - type: Input.Date
+                label: End date
+                id: endDate
+          - type: ColumnSet
+            columns:
+            - type: Column
+              width: stretch
+              items:
+              - type: Input.Time
+                label: Start time
+                id: startTime
+            - type: Column
+              width: stretch
+              items:
+              - type: Input.Time
+                label: End time
+                id: endTime
+          - type: Input.ChoiceSet
+            choices:
+            - title: Google
+              value: Google
+            - title: Outlook
+              value: Outlook
+            placeholder: Which calendar should we save it to?
+            label: Calendar
+          actions:
+          - type: Action.Execute
+            title: Save to calendar
+            verb: https://graph.microsoft.com/v1.0/me/calendars
+        requestFormatter:
+          subject: "${subject}"
+          body:
+            contentType: HTML
+            content: "${clipboardText}"
+          start:
+            dateTime: "${startDate}T${startTime}:00"
+            timeZone: Pacific Standard Time
+          end:
+            dateTime: "${startDate}T${startTime}:00"
+            timeZone: Pacific Standard Time
+          location:
+            displayName: "${location}"
   '/groups/{group-id}/calendar/calendarPermissions/{calendarPermission-id}':
     get:
       tags:
